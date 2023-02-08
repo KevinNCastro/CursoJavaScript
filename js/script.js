@@ -1,135 +1,91 @@
-//Mensaje inicial
-alert("¡Hola! Para realizar una reserva indíquenos los siguientes datos")
+// Validación mail
+email.addEventListener("input", function (event) {
+  if (email.validity.typeMismatch) {
+    email.setCustomValidity("Introduzca un correo electrónico");
+  } else {
+    email.setCustomValidity("");
+  }
+});
 
-function datoIngresado() {
-    alert("Dato ingresado correctamente")
-}
+// Enviar formulario
+let registrar = document.getElementById("registrar");
+registrar.addEventListener("submit", validarFormulario);
 
-//Nombre y apellido|
-let nombreYApellido = "";
-nombreYApellido = prompt("Ingrese su nombre y apellido") 
-while(nombreYApellido ==""){
-    alert("Dato no completado")
-    nombreYApellido = prompt("Ingrese su nombre y apellido")
-}
 
-datoIngresado()
-
-//Número de contacto
-let telefono = "";
-telefono = prompt("Ingrese un número de contacto") 
-while(telefono ==""){
-    alert("Dato no completado")
-    telefono = prompt("Ingrese un número de contacto")
-}
-
-datoIngresado()
-
-//E-mail de contacto
-let email = "";
-email = prompt("Ingrese un email") 
-while(email ==""){
-    alert("Dato no completado")
-    email = prompt("Ingrese un email")
-}
-
-datoIngresado()
-
-//Datos personales 
-const datosPersonales = {
-    nombreYApellido,
-    telefono,
-    email
-}
-
-console.log(datosPersonales)
-
-// Saludo 2
-class Saludo1{
-    constructor(nombre, telefono, email) {
-        this.nombre = nombre;
-        this.telefono   = telefono;
-        this.email  = email;
-    }
-    hablar(){
-        alert("Bienvenido "+ this.nombre +  ". Al finalizar de completar todos los campos, te llamaremos al: " + this.telefono + ". En caso de no contestar te escribiremos a: " + this.email);
-    }
-}
-const datosPersonalesIngresados = new Saludo1(nombreYApellido, telefono, email);
-datosPersonalesIngresados.hablar();
-
-//Ubicación en el restaurante
-let ubicacion = "SI";
-ubicacion = prompt("Si desea reservar la terraza escriba " + "SI. " + "En caso de querer el interior oprima cualquier tecla")
-if (ubicacion == "SI"){
-    alert("Terraza reservada")
-    console.log("Ubicación: terraza");
-}else{
-    alert("Interior reservado")
-    console.log("Ubicación: interior");
+function validarFormulario(e){
+    e.preventDefault();
+    console.log("Datos registrados");
 }
 
 
-//Cantidad de personas menores
-let cantidadPersonasMenores = "";
-cantidadPersonasMenores = prompt("Indique la cantidad de personas menores de 12 años") 
-while(cantidadPersonasMenores ==""){
-    alert("Dato no completado")
-    cantidadPersonasMenores = prompt("Indique la cantidad de personas menores de 12 años")
+// Autocompletar datos
+
+//Nombre registrado
+let dato1 = document.getElementById('dato1');
+dato1.innerText = "Nombre: ";
+
+let ingresoDeNombre = document.getElementById('nombre');
+ingresoDeNombre.onkeyup = () => {
+    dato1.innerText = 'Nombre: ' + ingresoDeNombre.value;
+    localStorage.setItem('nombre', ingresoDeNombre.value);
 }
-console.log ("Cantidad de personas menores: " + cantidadPersonasMenores)
 
-datoIngresado()
+// Telefono registrado
+let dato2 = document.getElementById('dato2');
+dato2.innerText = "Teléfono: ";
 
-//Cantidad de personas Mayores
-let cantidadPersonasMayores = "";
-cantidadPersonasMayores = prompt("Indique la cantidad de personas mayores de 5 años") 
-while(cantidadPersonasMayores ==""){
-    alert("Dato no completado")
-    cantidadPersonasMayores = prompt("Indique la cantidad de personas mayores de 5 años")
+let ingresoDeTelefono = document.getElementById('telefono');
+ingresoDeTelefono.onkeyup = () => {
+    dato2.innerText = 'Teléfono: ' + ingresoDeTelefono.value;
+    localStorage.setItem('telefono', ingresoDeTelefono.value);
 }
-console.log ("Cantidad de personas mayores: " + cantidadPersonasMayores)
 
-datoIngresado()
+// Email registrado
+let dato3 = document.getElementById('dato3');
+dato3.innerText = "Email: ";
 
-
-
-//Fecha de reserva
-let dia = "";
-dia = prompt("Ingrese una fecha a reservar") 
-while(dia ==""){    
-    alert("Dato no completado")
-    dia = prompt("Ingrese una fecha a reservar")
+let ingresoDeEmail = document.getElementById('email');
+ingresoDeEmail.onkeyup = () => {
+    dato3.innerText = 'Email: ' + ingresoDeEmail.value;
+    localStorage.setItem('email', ingresoDeEmail.value);
 }
-console.log ("Fecha de reserva: " + dia)
 
-datoIngresado()
+// Género registrado
+let dato4 = document.getElementById('dato4');
+dato4.innerText = "Género: ";
 
-//Horario de reserva
-let horario = "";
-horario = prompt("Ingrese un horario a reservar") 
-while(horario ==""){
-    alert("Dato no completado")
-    horario = prompt("Ingrese un horario a reservar")
+let ingresoDeGenero = document.getElementById('genero');
+ingresoDeGenero.onkeyup = () => {
+    dato4.innerText = 'Género: ' + ingresoDeGenero.value;
+    localStorage.setItem('genero', ingresoDeGenero.value);
 }
-console.log ("Horario: " + horario)
 
-datoIngresado()
+// Edad registrado
+let dato5 = document.getElementById('dato5');
+dato5.innerText = "Edad: ";
 
-alert("Aqui lo que se cobra en cubiertos se dona a quien lo necesite, por eso te pedimos que nos indiques los nombres de organizaciones con las que quieras colaborar.")
-const listaOrganizaciones = [];
-let   cantidad     = 3;
-do{
-   let entrada = prompt("Ingresar nombre");
-   listaOrganizaciones.push(entrada.toUpperCase());
-   console.log(listaOrganizaciones.length);
-}while(listaOrganizaciones.length != cantidad)
-alert("Además de tu colaboración, nosotros ayudaremos con otras dos entidades")
-const organizacionesPorDefecto = listaOrganizaciones.concat(["Comedor Feliz","Zapatillas para los chicos"]);
-alert(organizacionesPorDefecto.join("\n"));
+let ingresoDeEdad = document.getElementById('edad');
+ingresoDeEdad.onkeyup = () => {
+    dato5.innerText = 'Edad: ' + ingresoDeEdad.value;
+    localStorage.setItem('edad', ingresoDeEdad.value);
+}
 
-listaOrganizaciones.forEach( (string)=> {
-    console.log(string + " te agradece tu colaboración")
-} )
+// Opciones de turno
+const miJSON = '{"opciones": ["Turno mañana", "Turno tarde", "Turno noche"]}';
+const miObjeto = JSON.parse(miJSON);
 
-alert("Felicidades! Su reserva se ha completado satisfactoriamente")
+const elegirTurno = document.getElementById("elegirTurno");
+miObjeto.opciones.forEach(opcion => {
+  const nuevaOpcion = document.createElement("option");
+  nuevaOpcion.value = opcion;
+  nuevaOpcion.textContent = opcion;
+  elegirTurno.appendChild(nuevaOpcion);
+});
+
+if (localStorage.getItem("Turno elegido")) {
+  elegirTurno.value = localStorage.getItem("Turno elegido");
+}
+elegirTurno.addEventListener("change", function() {
+  localStorage.setItem("Turno elegido", elegirTurno.value);
+});
+

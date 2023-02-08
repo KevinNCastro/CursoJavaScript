@@ -4,10 +4,54 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preentrega 2</title>
+    <script src="js/script.js" defer></script>
+    <title>Preentrega 3</title>
 </head>
 <body>
-    <h1>Reserva</h1>    
-</body>
-<script src="js/script.js"></script>
+    <h1>Reservar turno</h1>
+    <p>Para reservar un turno complete los siguientes datos.</p>
+
+    <form id = "registrar">
+        <p><strong>Datos de contacto</strong></p>
+
+
+        <!-- Nombre -->
+        <label for="nombre">Nombre y apellido:</label>
+        <input type="text" id="nombre" class="contacto" placeholder="Marcos Pérez" required>
+  
+
+
+        <!-- Telefono -->
+        <label for="telefono">Teléfono:</label>     
+        <input type="number" min="1"  id="telefono" class="contacto" placeholder="12 3456 7890" required>
+    
+
+        <!-- Email -->
+        <label for="email">E-mail:</label>     
+            <input type="email" id="email" class="contacto" placeholder="mail@example.com" required>
+        
+        <!-- Género -->
+        <label for="genero">Género:</label>
+        <input type="text " id="genero" name="genero" required>
+       
+        <!-- Edad -->
+        <label for="edad">Edad:</label>
+        <input type="number" min="1" max="99" id="edad" name="edad" required>
+
+        <!-- Elegir turno -->
+        <select name="elegirTurno" id="elegirTurno"></select>
+
+        <!-- Botón de reserva -->
+        <button id="botonReservar" type="submit" value="registrarse">Registrarse</button>
+        
+    </form>
+    <div>
+        <h2>Datos registrados</h2>
+        <li id="dato1">Nombre</li>
+        <li id="dato2">Teléfono</li>
+        <li id="dato3">Email</li>
+        <li id="dato4">Género</li>
+        <li id="dato5">Edad</li>
+    </div>
+
 </html>
