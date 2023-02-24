@@ -1,0 +1,19 @@
+{
+  "turnos": [
+    {
+      "nombre": "Turno mañana",
+      "horario": "9:00 AM - 12:00 PM",
+      "lugaresDisponibles": 5
+    },
+    {
+      "nombre": "Turno tarde",
+      "horario": "1:00 PM - 4:00 PM",
+      "lugaresDisponibles": 3
+    },
+    {
+      "nombre": "Turno noche",
+      "horario": "5:00 PM - 8:00 PM",
+      "lugaresDisponibles": 7
+    }
+  ]
+}

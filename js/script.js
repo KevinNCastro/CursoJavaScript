@@ -1,3 +1,30 @@
+setTimeout(()=>{
+  Swal.fire('Completa todos tus datos para reservar un turno')
+},2000)
+
+function mostrarMensaje() {
+  Swal.fire({
+      title: 'No te tardes',
+      text: 'Es una dificil escoger un turno, pero recuerda que pueden acabarse',
+      icon: 'info',
+      showCancelButton: false,
+      showConfirmButton: false
+  })
+}
+
+let myTimeout = setTimeout(mostrarMensaje, 60000);
+
+function cerrarMensaje() {
+  Swal.close()
+}
+
+function reiniciarContador() {
+  cerrarMensaje()
+  clearTimeout(myTimeout);
+  myTimeout = setTimeout(mostrarMensaje, 60000);
+}
+document.addEventListener("mousemove", reiniciarContador)
+
 // Validación mail
 email.addEventListener("input", function (event) {
   if (email.validity.typeMismatch) {
@@ -7,85 +34,103 @@ email.addEventListener("input", function (event) {
   }
 });
 
-// Enviar formulario
-let registrar = document.getElementById("registrar");
-registrar.addEventListener("submit", validarFormulario);
 
-
-function validarFormulario(e){
-    e.preventDefault();
-    console.log("Datos registrados");
+function obtenerDatos() {
+  return fetch('./datos.json')
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
+let datos;
 
-// Autocompletar datos
-
-//Nombre registrado
-let dato1 = document.getElementById('dato1');
-dato1.innerText = "Nombre: ";
-
-let ingresoDeNombre = document.getElementById('nombre');
-ingresoDeNombre.onkeyup = () => {
-    dato1.innerText = 'Nombre: ' + ingresoDeNombre.value;
-    localStorage.setItem('nombre', ingresoDeNombre.value);
-}
-
-// Telefono registrado
-let dato2 = document.getElementById('dato2');
-dato2.innerText = "Teléfono: ";
-
-let ingresoDeTelefono = document.getElementById('telefono');
-ingresoDeTelefono.onkeyup = () => {
-    dato2.innerText = 'Teléfono: ' + ingresoDeTelefono.value;
-    localStorage.setItem('telefono', ingresoDeTelefono.value);
-}
-
-// Email registrado
-let dato3 = document.getElementById('dato3');
-dato3.innerText = "Email: ";
-
-let ingresoDeEmail = document.getElementById('email');
-ingresoDeEmail.onkeyup = () => {
-    dato3.innerText = 'Email: ' + ingresoDeEmail.value;
-    localStorage.setItem('email', ingresoDeEmail.value);
-}
-
-// Género registrado
-let dato4 = document.getElementById('dato4');
-dato4.innerText = "Género: ";
-
-let ingresoDeGenero = document.getElementById('genero');
-ingresoDeGenero.onkeyup = () => {
-    dato4.innerText = 'Género: ' + ingresoDeGenero.value;
-    localStorage.setItem('genero', ingresoDeGenero.value);
-}
-
-// Edad registrado
-let dato5 = document.getElementById('dato5');
-dato5.innerText = "Edad: ";
-
-let ingresoDeEdad = document.getElementById('edad');
-ingresoDeEdad.onkeyup = () => {
-    dato5.innerText = 'Edad: ' + ingresoDeEdad.value;
-    localStorage.setItem('edad', ingresoDeEdad.value);
-}
-
-// Opciones de turno
-const miJSON = '{"opciones": ["Turno mañana", "Turno tarde", "Turno noche"]}';
-const miObjeto = JSON.parse(miJSON);
-
-const elegirTurno = document.getElementById("elegirTurno");
-miObjeto.opciones.forEach(opcion => {
-  const nuevaOpcion = document.createElement("option");
-  nuevaOpcion.value = opcion;
-  nuevaOpcion.textContent = opcion;
-  elegirTurno.appendChild(nuevaOpcion);
+window.addEventListener('load', () => {
+  obtenerDatos().then(data => {
+    datos = data;
+    cargarTurnos();
+  });
 });
 
-if (localStorage.getItem("Turno elegido")) {
-  elegirTurno.value = localStorage.getItem("Turno elegido");
-}
-elegirTurno.addEventListener("change", function() {
-  localStorage.setItem("Turno elegido", elegirTurno.value);
-});
+function cargarTurnos() {
+  let selectTurnos = document.getElementById('elegirTurno');
 
+  datos.turnos.forEach(turno => {
+    let option = document.createElement('option');
+    option.value = turno.id;
+    option.text = turno.hora;
+    selectTurnos.add(option);
+  });
+}
+
+function validarFormulario(e) {
+  e.preventDefault();
+  
+  let nombre = document.getElementById('nombre').value;
+  let telefono = document.getElementById('telefono').value;
+  let email = document.getElementById('email').value;
+  let genero = document.getElementById('genero').value;
+  let edad = document.getElementById('edad').value;
+  let turno = document.getElementById('elegirTurno').value;
+  
+  if (!turno) {
+    Swal.fire(
+      'Error',
+      'Debe seleccionar un turno',
+      'error'
+    );
+    return;
+  }
+  
+  fetch('http://localhost:3000/reservar-turno', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ nombre, telefono, email, genero, edad, turno
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    Swal.fire(
+      '¡Datos registrados!',
+      'Sus datos han sido registrados correctamente',
+      'success'
+    );
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    Swal.fire(
+      'Error',
+      'No se pudo registrar el turno',
+      'error'
+    );
+  });
+}
+
+
+fetch("./datos.json")
+  .then(response => response.json())
+  .then(data => {
+
+
+    const elegirTurno = document.getElementById("elegirTurno");
+
+    data.turnos.forEach(turno => {
+      const nuevaOpcion = document.createElement("option");
+      nuevaOpcion.value = turno.nombre;
+      nuevaOpcion.textContent = turno.nombre + " - " + turno.horario + " (" + turno.lugaresDisponibles + " lugares disponibles)";
+      elegirTurno.appendChild(nuevaOpcion);
+    });
+    
+    if (localStorage.getItem("Turno elegido")) {
+      elegirTurno.value = localStorage.getItem("Turno elegido");
+    }
+
+    elegirTurno.addEventListener("change", function() {
+      localStorage.setItem("Turno elegido", elegirTurno.value);
+    });
+  });
